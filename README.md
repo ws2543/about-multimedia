@@ -1,2 +1,3 @@
 # about-multimedia
-多媒体
+## SRS直播平台
+![](./doc/有关SRS.png)
