@@ -19,5 +19,5 @@
 
 ![](./doc/cdn友好性对比.png)
 
-## FFmepg开源编解码
+## FFmpeg开源编解码工具
 
