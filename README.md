@@ -1,7 +1,7 @@
 # about-multimedia
-## SRS直播平台
+## 有关多媒体与直播
 
-![](./doc/有关SRS.png)
+![](./doc/有关多媒体和直播.png)
 
 ## 对比
 
