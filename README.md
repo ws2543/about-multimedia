@@ -19,8 +19,7 @@
 
 ![](./doc/cdn友好性对比.png)
 
-
 ## 有关Nginx高性能服务器
 
-![](./doc/有关Nginx.png）
+![](./doc/有关Nginx.png)
 
