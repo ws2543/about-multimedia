@@ -19,5 +19,8 @@
 
 ![](./doc/cdn友好性对比.png)
 
-## FFmpeg开源编解码工具
+
+## 有关Nginx高性能服务器
+
+![](./doc/有关Nginx.png）
 
