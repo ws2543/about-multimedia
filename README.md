@@ -5,10 +5,13 @@
 
 ## 多媒体知识
 
-### RTSP+(RTCP/RTP)
+### RTSP流+(RTCP/RTP)
 
 1. 通过Wireshark截获VLC播放某厂摄像头RTSP流+(RTCP/RTP基于UDP)
-- All Flows
+- RTSP+(RTCP/RTP)三者关系
+  - ![](./doc/rtsp_rtcp_rtp2.png)
+
+- Wireshark抓取VLC播放摄像头RTSP流过程
   - ![](./doc/rtsp_rtcp_rtp.png)
 
 - <details><summary>RTSP协议交互过程</summary>
