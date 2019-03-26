@@ -9,7 +9,8 @@
 
 	文件是既包括视频又包括音频、甚至还带有脚本的一个集合，也可以叫容器；文件当中的视频和音频的压缩算法才是具体的编码。
 
-- 常见的音频视频编码
+- <details><summary>常见的音频视频编码</summary>
+
 	- MPEG 系列：（由ISO[国际标准组织机构]下属的MPEG[运动图象专家组]开发）
 		- 视频编码方面主要是Mpeg1（vcd 用的就是它）、Mpeg2（DVD 使用）、Mpeg4（现在的DVDRIP 使用的都是它的变种，如：divx，xvid 等）、Mpeg4 AVC（现在正热门）；
 		- 音频编码方面主要是MPEG Audio Layer 1/2、MPEG Audio Layer 3（大名鼎鼎的mp3）、MPEG-2 AAC 、MPEG-4 AAC等等。注意：DVD音频没有采用Mpeg
@@ -24,7 +25,11 @@
 	- QuickTime系列
 		- 视频编码有Sorenson Video 3（用于QT5，成标准了）、Apple MPEG-4、Apple H.264
 		- 音频编码有QDesign Music 2、Apple MPEG-4 AAC
-- 常见的文件格式（容器）
+
+</details>
+
+- <details><summary>常见的文件格式（容器）</summary>
+
 	- AVI，音视频交互存储，最常见的音频视频容器。支持的视频音频编码也是最多的；
 	- MPG，MPEG编码采用的音频视频容器，具有流的特性，里面又分为PS，TS 等，PS主要用于DVD存储，TS主要用于HDTV；
 	- VOB，DVD采用的音频视频容器格式（即视频MPEG-2，音频用AC3 或者DTS），支持多视频多音轨多字幕章节等；
@@ -36,6 +41,9 @@
 	- MKV，它能把Windows Media Video，RealVideo，MPEG-4 等视频音频融为一个文件，而且支持多音轨，支持章节字幕等；
 	- WAV，一种音频容器（注意：只是音频），大家常说的WAV就是没有压缩的PCM编码，其实WAV里面还可以包括MP3等其他ACM压缩编码；
 	- MP3，MPEG Audio Layer 3（Mpeg 1 的音频编码的一种）文件转换（实际上也是编码转换）；
+
+</details>
+
 ### RTSP协议
 - RTSP+(RTCP/RTP)三者关系
   - ![](./doc/rtsp_rtcp_rtp2.png)
