@@ -4,98 +4,187 @@
 ![](./doc/有关多媒体与直播.png)
 
 ## 多媒体知识
-
-### RTSP流+(RTCP/RTP)
-
-1. 通过Wireshark截获VLC播放某厂摄像头RTSP流+(RTCP/RTP基于UDP)
+### RTSP协议
 - RTSP+(RTCP/RTP)三者关系
   - ![](./doc/rtsp_rtcp_rtp2.png)
 
-- Wireshark抓取VLC播放摄像头RTSP流过程
+### 案例一：vlc播放动画片，rtsp://184.72.239.149/vod/mp4:BigBuckBunny_115k.mov
+
+- Wireshark抓取RTSP流+(RTCP/RTP基于UDP)过程
+
   - ![](./doc/rtsp_rtcp_rtp.png)
 
 - <details><summary>RTSP协议交互过程</summary>
-    OPTIONS rtsp://115.236.15.165:554/cam/realmonitor?channel=1&subtype=0 RTSP/1.0
-    CSeq: 2
-    User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
 
-    RTSP/1.0 401 Unauthorized
-    CSeq: 2
-    WWW-Authenticate: Digest realm="Login to 4M0747EPAA1D284", nonce="745449738fdf77164f570c37c9186b52"
+	OPTIONS rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov RTSP/1.0
+	CSeq: 2
+	User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
+	
+	RTSP/1.0 200 OK
+	CSeq: 2
+	Server: Wowza Streaming Engine 4.7.5.01 build21752
+	Cache-Control: no-cache
+	Public: DESCRIBE, SETUP, TEARDOWN, PLAY, PAUSE, OPTIONS, ANNOUNCE, RECORD, GET_PARAMETER
+	Supported: play.basic, con.persistent
+	
+	DESCRIBE rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov RTSP/1.0
+	CSeq: 3
+	User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
+	Accept: application/sdp
+	
+	RTSP/1.0 200 OK
+	CSeq: 3
+	Server: Wowza Streaming Engine 4.7.5.01 build21752
+	Cache-Control: no-cache
+	Expires: Tue, 26 Mar 2019 02:22:23 UTC
+	Content-Length: 587
+	Content-Base: rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/
+	Date: Tue, 26 Mar 2019 02:22:23 UTC
+	Content-Type: application/sdp
+	Session: 310018309;timeout=60
+	
+	v=0
+	o=- 310018309 310018309 IN IP4 184.72.239.149
+	s=BigBuckBunny_115k.mov
+	c=IN IP4 184.72.239.149
+	t=0 0
+	a=sdplang:en
+	a=range:npt=0- 596.48
+	a=control:*
+	m=audio 0 RTP/AVP 96
+	a=rtpmap:96 mpeg4-generic/12000/2
+	a=fmtp:96 profile-level-id=1;mode=AAC-hbr;sizelength=13;indexlength=3;indexdeltalength=3;config=1490
+	a=control:trackID=1
+	m=video 0 RTP/AVP 97
+	a=rtpmap:97 H264/90000
+	a=fmtp:97 packetization-mode=1;profile-level-id=42C01E;sprop-parameter-sets=Z0LAHtkDxWhAAAADAEAAAAwDxYuS,aMuMsg==
+	a=cliprect:0,0,160,240
+	a=framesize:97 240-160
+	a=framerate:24.0
+	a=control:trackID=2
+	SETUP rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/trackID=1 RTSP/1.0
+	CSeq: 4
+	User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
+	Transport: RTP/AVP;unicast;client_port=54286-54287
+	
+	RTSP/1.0 200 OK
+	CSeq: 4
+	Server: Wowza Streaming Engine 4.7.5.01 build21752
+	Cache-Control: no-cache
+	Expires: Tue, 26 Mar 2019 02:22:23 UTC
+	Transport: RTP/AVP;unicast;client_port=54286-54287;source=184.72.239.149;server_port=8432-8433;ssrc=389A31E5
+	Date: Tue, 26 Mar 2019 02:22:23 UTC
+	Session: 310018309;timeout=60
+	
+	SETUP rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/trackID=2 RTSP/1.0
+	CSeq: 5
+	User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
+	Transport: RTP/AVP;unicast;client_port=54288-54289
+	Session: 310018309
+	
+	RTSP/1.0 200 OK
+	CSeq: 5
+	Server: Wowza Streaming Engine 4.7.5.01 build21752
+	Cache-Control: no-cache
+	Expires: Tue, 26 Mar 2019 02:22:23 UTC
+	Transport: RTP/AVP;unicast;client_port=54288-54289;source=184.72.239.149;server_port=16626-16627;ssrc=4B70664B
+	Date: Tue, 26 Mar 2019 02:22:23 UTC
+	Session: 310018309;timeout=60
+	
+	PLAY rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/ RTSP/1.0
+	CSeq: 6
+	User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
+	Session: 310018309
+	Range: npt=0.000-
+	
+	RTSP/1.0 200 OK
+	RTP-Info: url=rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/trackID=1;seq=1;rtptime=0,url=rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/trackID=2;seq=1;rtptime=0
+	CSeq: 6
+	Server: Wowza Streaming Engine 4.7.5.01 build21752
+	Cache-Control: no-cache
+	Range: npt=0.0-596.48
+	Session: 310018309;timeout=60
+	
+	PAUSE rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/ RTSP/1.0
+	CSeq: 7
+	User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
+	Session: 310018309
+	
+	RTSP/1.0 200 OK
+	CSeq: 7
+	Server: Wowza Streaming Engine 4.7.5.01 build21752
+	Cache-Control: no-cache
+	Session: 310018309;timeout=60
+	
+	PLAY rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/ RTSP/1.0
+	CSeq: 8
+	User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
+	Session: 310018309
+	Range: npt=37.220-
+	
+	RTSP/1.0 200 OK
+	RTP-Info: url=rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/trackID=1;seq=113;rtptime=445440,url=rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/trackID=2;seq=296;rtptime=3340800
+	CSeq: 8
+	Server: Wowza Streaming Engine 4.7.5.01 build21752
+	Cache-Control: no-cache
+	Range: npt=37.22-596.48
+	Session: 310018309;timeout=60
+	
+	PAUSE rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/ RTSP/1.0
+	CSeq: 9
+	User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
+	Session: 310018309
+	
+	RTSP/1.0 200 OK
+	CSeq: 9
+	Server: Wowza Streaming Engine 4.7.5.01 build21752
+	Cache-Control: no-cache
+	Session: 310018309;timeout=60
+	
+	PLAY rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/ RTSP/1.0
+	CSeq: 10
+	User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
+	Session: 310018309
+	Range: npt=121.921-
+	
+	RTSP/1.0 200 OK
+	RTP-Info: url=rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/trackID=1;seq=119;rtptime=1464324,url=rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/trackID=2;seq=316;rtptime=10982430
+	CSeq: 10
+	Server: Wowza Streaming Engine 4.7.5.01 build21752
+	Cache-Control: no-cache
+	Range: npt=121.921-596.48
+	Session: 310018309;timeout=60
+	
+	PAUSE rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/ RTSP/1.0
+	CSeq: 11
+	User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
+	Session: 310018309
+	
+	RTSP/1.0 200 OK
+	CSeq: 11
+	Server: Wowza Streaming Engine 4.7.5.01 build21752
+	Cache-Control: no-cache
+	Session: 310018309;timeout=60
+	
+	PLAY rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/ RTSP/1.0
+	CSeq: 12
+	User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
+	Session: 310018309
+	Range: npt=197.793-
+	
+	RTSP/1.0 200 OK
+	RTP-Info: url=rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/trackID=1;seq=143;rtptime=2363388,url=rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/trackID=2;seq=388;rtptime=17725410
+	CSeq: 12
+	Server: Wowza Streaming Engine 4.7.5.01 build21752
+	Cache-Control: no-cache
+	Range: npt=197.793-596.48
+	Session: 310018309;timeout=60
+	
+	TEARDOWN rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_115k.mov/ RTSP/1.0
+	CSeq: 13
+	User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
+	Session: 310018309
 
-    OPTIONS rtsp://115.236.15.165:554/cam/realmonitor?channel=1&subtype=0 RTSP/1.0
-    CSeq: 3
-    Authorization: Digest username="admin", realm="Login to 4M0747EPAA1D284", nonce="745449738fdf77164f570c37c9186b52", uri="rtsp://115.236.15.165:554/cam/realmonitor?channel=1&subtype=0", response="d2bbade17fc39c7e39f7122862e7b781"
-    User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
-
-    RTSP/1.0 200 OK
-    CSeq: 3
-    Server: Rtsp Server/3.0
-    Public: OPTIONS, DESCRIBE, ANNOUNCE, SETUP, PLAY, RECORD, PAUSE, TEARDOWN, SET_PARAMETER, GET_PARAMETER
-
-    DESCRIBE rtsp://115.236.15.165:554/cam/realmonitor?channel=1&subtype=0 RTSP/1.0
-    CSeq: 4
-    Authorization: Digest username="admin", realm="Login to 4M0747EPAA1D284", nonce="745449738fdf77164f570c37c9186b52", uri="rtsp://115.236.15.165:554/cam/realmonitor?channel=1&subtype=0", response="0c1a43aee144161f39c11b20c7ed37fa"
-    User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
-    Accept: application/sdp
-
-    RTSP/1.0 200 OK
-    CSeq: 4
-    x-Accept-Dynamic-Rate: 1
-    Content-Base: rtsp://115.236.15.165:554/cam/realmonitor?channel=1&subtype=0/
-    Cache-Control: must-revalidate
-    Content-Length: 401
-    Content-Type: application/sdp
-
-    v=0
-    o=- 2252091052 2252091052 IN IP4 0.0.0.0
-    s=Media Server
-    c=IN IP4 0.0.0.0
-    t=0 0
-    a=control:*
-    a=packetization-supported:DH
-    a=rtppayload-supported:DH
-    a=range:npt=now-
-    m=video 0 RTP/AVP 96
-    a=control:trackID=0
-    a=framerate:25.000000
-    a=rtpmap:96 H264/90000
-    a=fmtp:96 packetization-mode=1;profile-level-id=4D002A;sprop-parameter-sets=Z00AKp2oHgCJ+WbgICAoAAAfQAAGGoQgAA==,aO48gAA=
-    a=recvonly
-    SETUP rtsp://115.236.15.165:554/cam/realmonitor?channel=1&subtype=0/trackID=0 RTSP/1.0
-    CSeq: 5
-    Authorization: Digest username="admin", realm="Login to 4M0747EPAA1D284", nonce="745449738fdf77164f570c37c9186b52", uri="rtsp://115.236.15.165:554/cam/realmonitor?channel=1&subtype=0/", response="5f799cb37a51a1463224540af4db9ac5"
-    User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
-    Transport: RTP/AVP;unicast;client_port=61246-61247
-
-    RTSP/1.0 200 OK
-    CSeq: 5
-    Session: 272327472040;timeout=60
-    Transport: RTP/AVP/UDP;unicast;client_port=61246-61247;server_port=41490-41491;ssrc=039FB573
-    x-Dynamic-Rate: 1
-
-    PLAY rtsp://115.236.15.165:554/cam/realmonitor?channel=1&subtype=0/ RTSP/1.0
-    CSeq: 6
-    Authorization: Digest username="admin", realm="Login to 4M0747EPAA1D284", nonce="745449738fdf77164f570c37c9186b52", uri="rtsp://115.236.15.165:554/cam/realmonitor?channel=1&subtype=0/", response="5411553c7eb81bdbe384bac58407863b"
-    User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
-    Session: 272327472040
-    Range: npt=0.000-
-
-    RTSP/1.0 200 OK
-    CSeq: 6
-    Session: 272327472040
-    Range: npt=0.000000-
-    RTP-Info: url=trackID=0;seq=9513;rtptime=2160343659
-
-    TEARDOWN rtsp://115.236.15.165:554/cam/realmonitor?channel=1&subtype=0/ RTSP/1.0
-    CSeq: 7
-    Authorization: Digest username="admin", realm="Login to 4M0747EPAA1D284", nonce="745449738fdf77164f570c37c9186b52", uri="rtsp://115.236.15.165:554/cam/realmonitor?channel=1&subtype=0/", response="12056f94551c6675cc80cc18df1f0fd5"
-    User-Agent: LibVLC/3.0.6 (LIVE555 Streaming Media v2016.11.28)
-    Session: 272327472040
-
-    RTSP/1.0 200 OK
-    CSeq: 7
-    Session: 272327472040
 </details>
 
 
