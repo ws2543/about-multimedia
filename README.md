@@ -281,6 +281,92 @@
 
 ![](./doc/cdn友好性对比.png)
 
+## SRS源码分析
+
+<details><summary>关键流程</summary>
+
+- run_master
+
+	- SrsServer::listen
+		- listen_rtmp，推流（rtmp）到srs
+			- 创建SrsBufferListener对象，并listen
+				- 创建SrsTcpListener对象，并listen
+					- 调用套接口监听
+					- 创建“tcp” SrsSTCoroutine对象
+					- 调用start
+						- st_thread_create，启动协程SrsSTCoroutine::pfn
+						- **SrsSTCoroutine::pfn，独立协程**
+							- SrsSTCoroutine::cycle
+								- handler->cycle()，此处handler为SrsTcpListener对象，实际调用SrsTcpListener::cycle
+									- handler->on_tcp_client，此处handler为SrsBufferListener对象，实际调用SrsBufferListener::on_tcp_client
+										- server->accept_client，实际调用SrsServer::accept_client
+											- fd2conn
+												- type == SrsListenerRtmpStream，创建SrsRtmpConn对象
+											- conn->start，实际调用SrsRtmpConn父类SrsConnection::start
+												- trd->start，实际调用SrsSTCoroutine::start
+													- SrsConnection::cycle
+														- SrsRtmpConn::do_cycle，rtmp协议处理
+	- SrsServer::ingest
+		- SrsIngester::parse_engines，解析配置文件“ingest”部分
+			- 如果“enabled”部分“off”则退出，否则继续；
+			- 如果“ffmpeg”为空退出，否则继续；
+			- 遍历所有“engine”，根据“engine”是否为空，创建不同的ingester采集器对象（属于SrsIngesterFFMPEG类）
+				- SrsIngester::initialize_ffmpeg，解析配置文件“engine”、“input”部分，为ffmpeg做准备同时根据vhost，port信息生成完整的rtmp地址
+	- SrsServer::cycle
+		- SrsServer::do_cycle
+			- handler->on_cycle，循环调用
+	- listen\_http_api
+	- listen\_http_stream
+	- listen\_stream_caster，推流（非rtmp）到srs，输出rtmp，对应配置文件“stream_caster”和“caster”部分
+		- rtsp caster,
+			- 创建SrsRtspListener对象（内部创建SrsRtspCaster对象，赋给caster）
+				- 创建SrsTcpListener对象，并listen
+					- 调用套接口监听
+					- 创建“tcp” SrsSTCoroutine对象
+					- 调用start
+						- st_thread_create，启动协程SrsSTCoroutine::pfn
+							- **SrsSTCoroutine::pfn，独立协程**
+								- p->cycle，实际调用SrsTcpListener::cycle
+									- handler->on_tcp_client，实际调用SrsRtspListener::on_tcp_client
+										- caster->on_tcp_client，实际调用SrsRtspCaster::on_tcp_client
+											- 创建SrsRtspConn对象，并serve
+												- SrsConnection::cycle
+													- SrsRtspConn::cycle
+														- SrsRtspConn::do_cycle，rtsp协议处理
+		- flv caster,
+			- 创建SrsHttpFlvListener对象（内部创建SrsAppCasterFlv对象，赋给caster）
+				- 创建SrsTcpListener对象，并listen
+					- 调用套接口监听
+					- 创建“tcp” SrsSTCoroutine对象
+					- 调用start
+						- st_thread_create，启动协程SrsSTCoroutine::pfn
+							- **SrsSTCoroutine::pfn，独立协程**
+								- p->cycle，实际调用SrsTcpListener::cycle
+									- handler->on_tcp_client，实际调用SrsHttpFlvListener::on_tcp_client
+										- caster->on_tcp_client，实际调用SrsAppCasterFlv::on_tcp_client
+											- 创建SrsDynamicHttpConn对象
+											- 调用start
+												- conn->start，实际调用SrsDynamicHttpConn父类SrsConnection::start
+												- trd->start，实际调用SrsSTCoroutine::start
+													- SrsConnection::cycle
+														- SrsHttpConn::do_cycle，http协议处理
+															- on_got_http_message
+																- SrsAppCasterFlv::serve_http
+		- mpegts\_over_udp,
+			- 创建SrsUdpCasterListener对象（内部创建SrsMpegtsOverUdp对象）
+				- 创建SrsUdpListener对象，并listen
+					- 创建套接口
+					- 创建“udp” SrsSTCoroutine对象
+					- 调用start
+					- st_thread_create，启动协程SrsSTCoroutine::pfn
+							- **SrsSTCoroutine::pfn，独立协程**
+								- p->cycle，实际调用SrsUdpListener::cycle
+									- handler->on_udp_packet，实际调用SrsMpegtsOverUdp::on_udp_packet
+										- context->decode，解码ts包
+		
+
+</details>
+
 ## 有关Nginx高性能服务器
 
 ![](./doc/有关Nginx.png)
