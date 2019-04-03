@@ -283,6 +283,24 @@
 
 ## SRS源码分析
 
+<details><summary>解析命令选项</summary>
+
+- do_main
+	- SrsConfig::parse_options
+		- SrsConfig::parse_argv，解析命令行选项
+		- parse_file，解析配置文件"listen"、"http_server"、"daemon"、"srs_log_tank"部分
+
+</details>
+
+<details><summary>state thread协程创建及调度</summary>
+
+- st_thread_create
+	- SrsSTCoroutine::pfn
+		- SrsSTCoroutine::cycle
+			- handler->cycle，此处handler为创建SrsSTCoroutine对象时传入的第二个参数对象，必需继承至ISrsCoroutineHandler且实现cycle函数
+
+</details>
+
 <details><summary>关键流程</summary>
 
 - run_master
