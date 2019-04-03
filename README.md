@@ -292,14 +292,30 @@
 
 </details>
 
-<details><summary>state thread协程创建及调度</summary>
+<details><summary>state thread协程管理</summary>
 
-- st_thread_create
+- st_thread_create，创建协程
 	- SrsSTCoroutine::pfn
 		- SrsSTCoroutine::cycle
 			- handler->cycle，此处handler为创建SrsSTCoroutine对象时传入的第二个参数对象，必需继承至ISrsCoroutineHandler且实现cycle函数
 
 </details>
+
+<details><summary>信号管理</summary>
+
+
+</details>
+
+<details><summary>监听管理</summary>
+
+
+</details>
+
+<details><summary>连接管理</summary>
+
+
+</details>
+
 
 <details><summary>关键流程</summary>
 
@@ -417,3 +433,4 @@
 24. [雷霄骅 - AAC音频码流解析](https://blog.csdn.net/leixiaohua1020/article/details/50535042)
 25. [雷霄骅 - FLV封装格式解析](https://blog.csdn.net/leixiaohua1020/article/details/50535082)
 26. [雷霄骅 - UDP-RTP协议解析](https://blog.csdn.net/leixiaohua1020/article/details/50535230)
+27. [雷霄骅 - ffmpeg源码简析（一）结构总览](https://blog.csdn.net/king1425/article/details/70597642/)
