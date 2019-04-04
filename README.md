@@ -281,7 +281,7 @@
 
 ![](./doc/cdn友好性对比.png)
 
-## SRS源码分析
+## SRS分析
 
 <details><summary>解析命令选项</summary>
 
@@ -292,7 +292,7 @@
 
 </details>
 
-<details><summary>state thread协程管理</summary>
+<details><summary>协程管理</summary>
 
 - st_thread_create，创建协程
 	- SrsSTCoroutine::pfn
@@ -400,6 +400,12 @@
 		
 
 </details>
+
+### Forward集群模式
+
+![](./doc/SRS_Forward模式.jpg)
+
+![](./doc/SRS_Forward_Nginx模式.jpg)
 
 ## 有关Nginx高性能服务器
 
