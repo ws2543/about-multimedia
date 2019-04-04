@@ -341,11 +341,27 @@
 													- SrsConnection::cycle
 														- SrsRtmpConn::do_cycle，rtmp协议处理
 	- SrsServer::ingest
-		- SrsIngester::parse_engines，解析配置文件“ingest”部分
-			- 如果“enabled”部分“off”则退出，否则继续；
-			- 如果“ffmpeg”为空退出，否则继续；
-			- 遍历所有“engine”，根据“engine”是否为空，创建不同的ingester采集器对象（属于SrsIngesterFFMPEG类）
-				- SrsIngester::initialize_ffmpeg，解析配置文件“engine”、“input”部分，为ffmpeg做准备同时根据vhost，port信息生成完整的rtmp地址
+		- SrsIngester::start
+			- 创建“tcp” SrsSTCoroutine对象
+			- 调用start
+				- st_thread_create，启动协程SrsSTCoroutine::pfn
+				- **SrsSTCoroutine::pfn，独立协程**
+					- SrsSTCoroutine::cycle
+						- handler->cycle()，此处handler为SrsIngester对象，实际调用SrsIngester::cycle
+							- SrsIngester::do_cycle
+								- SrsIngester::parse
+									- SrsIngester::parse_ingesters，遍历所有vhost，并调用该函数解析配置文件“ingest”部分
+										- 如果“enabled”部分“off”则退出，否则继续；
+										- 如果“ffmpeg”为空退出，否则继续；
+										- SrsIngester::parse_engines，遍历所有“engine”，根据“engine”是否为空，创建不同的ingester采集器对象（属于SrsIngesterFFMPEG类）
+											- SrsIngester::initialize_ffmpeg，解析配置文件“engine”、“input”部分，为ffmpeg做准备同时根据vhost，port信息生成完整的rtmp地址
+								- SrsIngesterFFMPEG::start，遍历所有的ingest
+									- SrsFFMPEG::start
+										- SrsProcess::initialize，拼接采集器命令选项
+										- SrsProcess::start，创建采集器进程
+								- SrsIngesterFFMPEG::cycle
+									- SrsFFMPEG::cycle
+										- SrsProcess::cycle，获取采集器状态
 	- SrsServer::cycle
 		- SrsServer::do_cycle
 			- handler->on_cycle，循环调用
