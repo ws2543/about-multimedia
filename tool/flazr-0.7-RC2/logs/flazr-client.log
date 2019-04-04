@@ -1,0 +1,52 @@
+09:39:59,334 [main] INFO [ClientOptions] - options: [host: '192.168.1.120' port: 1935 appName: 'live' streamName: 'donghua2' saveAs: 'null' rtmpe: false publish: null start: -2 length: -1 buffer: 100 params: null args: null load: 10 loop: 1 threads: 10]
+09:39:59,339 [main] INFO [RtmpClient] - load testing mode, no. of connections to create: 10
+09:39:59,402 [pool-1-thread-2] INFO [RtmpClient] - >> spawning connection #2
+09:39:59,403 [pool-1-thread-4] INFO [RtmpClient] - >> spawning connection #4
+09:39:59,402 [pool-1-thread-3] INFO [RtmpClient] - >> spawning connection #3
+09:39:59,402 [pool-1-thread-1] INFO [RtmpClient] - >> spawning connection #1
+09:39:59,409 [pool-1-thread-5] INFO [RtmpClient] - >> spawning connection #5
+09:39:59,410 [pool-1-thread-6] INFO [RtmpClient] - >> spawning connection #6
+09:39:59,413 [pool-1-thread-7] INFO [RtmpClient] - >> spawning connection #7
+09:39:59,416 [pool-1-thread-8] INFO [RtmpClient] - >> spawning connection #8
+09:39:59,416 [pool-1-thread-9] INFO [RtmpClient] - >> spawning connection #9
+09:39:59,420 [pool-1-thread-10] INFO [RtmpClient] - >> spawning connection #10
+09:39:59,639 [pool-1-thread-3] INFO [ClientHandler] - channel opened: [id: 0x011f95fd] OPEN
+09:39:59,639 [pool-1-thread-9] INFO [ClientHandler] - channel opened: [id: 0x005d7d18] OPEN
+09:39:59,639 [pool-1-thread-5] INFO [ClientHandler] - channel opened: [id: 0x000f0e37] OPEN
+09:39:59,639 [pool-1-thread-1] INFO [ClientHandler] - channel opened: [id: 0x01a7497f] OPEN
+09:39:59,639 [pool-1-thread-6] INFO [ClientHandler] - channel opened: [id: 0x01453d77] OPEN
+09:39:59,639 [pool-1-thread-7] INFO [ClientHandler] - channel opened: [id: 0x008f404b] OPEN
+09:39:59,639 [pool-1-thread-10] INFO [ClientHandler] - channel opened: [id: 0x01bc1e3e] OPEN
+09:39:59,639 [pool-1-thread-2] INFO [ClientHandler] - channel opened: [id: 0x014a1e53] OPEN
+09:39:59,639 [pool-1-thread-4] INFO [ClientHandler] - channel opened: [id: 0x0028b832] OPEN
+09:39:59,639 [pool-1-thread-8] INFO [ClientHandler] - channel opened: [id: 0x016d7b9d] OPEN
+09:40:01,663 [pool-1-thread-4] INFO [RtmpClient] - << spawned connection #4
+09:40:01,664 [pool-1-thread-10] INFO [RtmpClient] - << spawned connection #10
+09:40:01,664 [pool-1-thread-9] INFO [RtmpClient] - << spawned connection #9
+09:40:01,663 [pool-1-thread-7] INFO [RtmpClient] - << spawned connection #7
+09:40:01,663 [pool-1-thread-5] INFO [RtmpClient] - << spawned connection #5
+09:40:01,663 [pool-1-thread-3] INFO [RtmpClient] - << spawned connection #3
+09:40:01,663 [pool-1-thread-8] INFO [RtmpClient] - << spawned connection #8
+09:40:01,663 [pool-1-thread-1] INFO [RtmpClient] - << spawned connection #1
+09:40:01,663 [pool-1-thread-6] INFO [RtmpClient] - << spawned connection #6
+09:40:01,663 [pool-1-thread-2] INFO [RtmpClient] - << spawned connection #2
+09:40:11,679 [New I/O client boss #1] INFO [ClientHandler] - channel closed: [id: 0x01bc1e3e] CLOSED
+09:40:11,682 [New I/O client boss #1] INFO [ChannelUtils] - exception: connection timed out
+09:40:11,682 [New I/O client boss #1] INFO [ClientHandler] - channel closed: [id: 0x005d7d18] CLOSED
+09:40:11,683 [New I/O client boss #1] INFO [ChannelUtils] - exception: connection timed out
+09:40:11,687 [New I/O client boss #1] INFO [ClientHandler] - channel closed: [id: 0x01a7497f] CLOSED
+09:40:11,688 [New I/O client boss #1] INFO [ChannelUtils] - exception: connection timed out
+09:40:11,689 [New I/O client boss #1] INFO [ClientHandler] - channel closed: [id: 0x008f404b] CLOSED
+09:40:11,689 [New I/O client boss #1] INFO [ChannelUtils] - exception: connection timed out
+09:40:11,690 [New I/O client boss #1] INFO [ClientHandler] - channel closed: [id: 0x01453d77] CLOSED
+09:40:11,691 [New I/O client boss #1] INFO [ChannelUtils] - exception: connection timed out
+09:40:11,691 [New I/O client boss #1] INFO [ClientHandler] - channel closed: [id: 0x016d7b9d] CLOSED
+09:40:11,695 [New I/O client boss #1] INFO [ChannelUtils] - exception: connection timed out
+09:40:11,695 [New I/O client boss #1] INFO [ClientHandler] - channel closed: [id: 0x000f0e37] CLOSED
+09:40:11,697 [New I/O client boss #1] INFO [ChannelUtils] - exception: connection timed out
+09:40:11,700 [New I/O client boss #1] INFO [ClientHandler] - channel closed: [id: 0x014a1e53] CLOSED
+09:40:11,702 [New I/O client boss #1] INFO [ChannelUtils] - exception: connection timed out
+09:40:11,707 [New I/O client boss #1] INFO [ClientHandler] - channel closed: [id: 0x0028b832] CLOSED
+09:40:11,708 [New I/O client boss #1] INFO [ChannelUtils] - exception: connection timed out
+09:40:11,708 [New I/O client boss #1] INFO [ClientHandler] - channel closed: [id: 0x011f95fd] CLOSED
+09:40:11,708 [New I/O client boss #1] INFO [ChannelUtils] - exception: connection timed out
