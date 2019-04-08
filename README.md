@@ -261,6 +261,9 @@
 
 ## 直播技术和SRS开源直播平台
 
+
+<details><summary>SRS与其他直播平台对比</summary>
+
 ![](./doc/推流和拉流.jpg)
 
 ![](./doc/HLS方案模拟.jpg)
@@ -280,6 +283,8 @@
 ![](./doc/code对比.png)
 
 ![](./doc/cdn友好性对比.png)
+
+</details>
 
 ## SRS分析
 
@@ -437,6 +442,7 @@
   有些老的设备，能输出HTTP的ts或FLV流，可以采集后转封装为RTMP，支持HLS输出。
 
   总之，采集的应用场景主要是“SRS拉流”；能拉任意的流，只要ffmpeg支持；不是h264/aac都没有关系，ffmpeg能转码。
+
 ### Forward集群模式
 
 ![](./doc/SRS_Forward模式.jpg)
