@@ -349,26 +349,27 @@
 					- SrsSTCoroutine::cycle
 						- handler->cycle()，此处handler为SrsIngester对象，实际调用SrsIngester::cycle
 							- SrsIngester::do_cycle
-								- SrsIngester::parse
+								- SrsIngester::parse，解析配置文件
 									- SrsIngester::parse_ingesters，遍历所有vhost，并调用该函数解析配置文件“ingest”部分
 										- 如果“enabled”部分“off”则退出，否则继续；
 										- 如果“ffmpeg”为空退出，否则继续；
 										- SrsIngester::parse_engines，遍历所有“engine”，根据“engine”是否为空，创建不同的ingester采集器对象（属于SrsIngesterFFMPEG类）
 											- SrsIngester::initialize_ffmpeg，解析配置文件“engine”、“input”部分，为ffmpeg做准备同时根据vhost，port信息生成完整的rtmp地址
-								- SrsIngesterFFMPEG::start，遍历所有的ingest
-									- SrsFFMPEG::start
-										- SrsProcess::initialize，拼接采集器命令选项
-										- SrsProcess::start，创建采集器进程
-								- SrsIngesterFFMPEG::cycle
-									- SrsFFMPEG::cycle
-										- SrsProcess::cycle，获取采集器状态
+								- **遍历所有的ingest对象**
+									- SrsIngesterFFMPEG::start，拼接命令选项并创建进程
+										- SrsFFMPEG::start
+											- SrsProcess::initialize，拼接采集器命令选项
+											- SrsProcess::start，创建采集器进程
+									- SrsIngesterFFMPEG::cycle，收集采集器运行状态
+										- SrsFFMPEG::cycle
+											- SrsProcess::cycle，获取采集器状态
 	- SrsServer::cycle
 		- SrsServer::do_cycle
 			- handler->on_cycle，循环调用
 	- listen\_http_api
 	- listen\_http_stream
 	- listen\_stream_caster，推流（非rtmp）到srs，输出rtmp，对应配置文件“stream_caster”和“caster”部分
-		- rtsp caster,
+		- rtsp caster（**Push RTSP to SRS**）
 			- 创建SrsRtspListener对象（内部创建SrsRtspCaster对象，赋给caster）
 				- 创建SrsTcpListener对象，并listen
 					- 调用套接口监听
@@ -383,7 +384,7 @@
 												- SrsConnection::cycle
 													- SrsRtspConn::cycle
 														- SrsRtspConn::do_cycle，rtsp协议处理
-		- flv caster,
+		- flv caster（**Push HTTP FLV to SRS**）
 			- 创建SrsHttpFlvListener对象（内部创建SrsAppCasterFlv对象，赋给caster）
 				- 创建SrsTcpListener对象，并listen
 					- 调用套接口监听
@@ -402,7 +403,7 @@
 														- SrsHttpConn::do_cycle，http协议处理
 															- on_got_http_message
 																- SrsAppCasterFlv::serve_http
-		- mpegts\_over_udp,
+		- mpegts\_over_udp（**Push MPEG-TS over UDP**）
 			- 创建SrsUdpCasterListener对象（内部创建SrsMpegtsOverUdp对象）
 				- 创建SrsUdpListener对象，并listen
 					- 创建套接口
@@ -441,6 +442,23 @@
 ![](./doc/SRS_Forward模式.jpg)
 
 ![](./doc/SRS_Forward_Nginx模式.jpg)
+
+
+<details><summary>Master节点关键流程</summary>
+
+- SrsForwarder::cycle
+  - SrsForwarder::do_cycle
+    - srs_parse_hostport，解析ip和port
+    - srs_generate_rtmp_url，生成rtmp地址
+    - new SrsSimpleRtmpClient，创建了SrsSimpleRtmpClient对象
+    - 调用connect，内部创建了tcp对象和rtmp对象
+      - client->handshake，跟Slave握手
+      - connect_app，建立连接
+      - client->create_stream，创建流
+    - 调用publish，处理编码器推流rtmp
+    - 调用on_forwarder_start，缓存音视频数据
+    - 调用forward，真正发送音视频数据给slave 
+</details>
 
 ### Edge集群模式
 
